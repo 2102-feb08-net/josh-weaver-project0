@@ -5,6 +5,7 @@ bin
 obj
 .vs
 .vscode/
+.sln
 
 
 # if a file is /already tracked/ by git, the
