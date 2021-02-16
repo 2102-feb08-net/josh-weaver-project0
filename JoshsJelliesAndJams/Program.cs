@@ -1,12 +1,13 @@
 ﻿using System;
+using JoshsJelliesAndJams.Interface;
 
 namespace JoshsJelliesAndJams
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            
+            Interface.Welcome();
         }
     }
 }
