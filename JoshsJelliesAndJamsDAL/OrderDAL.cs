@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JoshsJelliesAndJamsDAL
 {
-    class OrderDAL
+    public class OrderDAL
     {
     }
 }

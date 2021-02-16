@@ -2,7 +2,7 @@
 
 namespace JoshsJelliesAndJamsBLL
 {
-    class CustomerBLL
+    public class CustomerBLL
     {
         static void Main(string[] args)
         {

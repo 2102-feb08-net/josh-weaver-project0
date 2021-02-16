@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JoshsJelliesAndJamsDAL
 {
-    class CustomerDAL
+    public class CustomerDAL
     {
     }
 }

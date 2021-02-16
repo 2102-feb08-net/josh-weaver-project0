@@ -7,7 +7,7 @@ namespace JoshsJelliesAndJams
     {
         static void Main(string[] args)
         {
-            Interface.Welcome();
+            UserInterface.Welcome();
         }
     }
 }

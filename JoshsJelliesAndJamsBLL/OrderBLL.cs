@@ -4,7 +4,7 @@ using System.Text;
 
 namespace JoshsJelliesAndJamsBLL
 {
-    class OrderBLL
+    public class OrderBLL
     {
     }
 }
