@@ -12,13 +12,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJams.Interfa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJams.Models", "JoshsJelliesAndJams.Models\JoshsJelliesAndJams.Models.csproj", "{F5DB9C0A-BAFF-4A20-BBDD-AB698CBF3751}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJamsBLL", "JoshsJelliesAndJamsBLL\JoshsJelliesAndJamsBLL.csproj", "{4C5FAF22-6548-40FC-B70B-47C44655543C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJams.BLL", "JoshsJelliesAndJamsBLL\JoshsJelliesAndJams.BLL.csproj", "{4C5FAF22-6548-40FC-B70B-47C44655543C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F5DB9C0A-BAFF-4A20-BBDD-AB698CBF3751} = {F5DB9C0A-BAFF-4A20-BBDD-AB698CBF3751}
 		{9F8D33E6-CB5D-4ADE-896A-54D447624100} = {9F8D33E6-CB5D-4ADE-896A-54D447624100}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJamsDAL", "JoshsJelliesAndJamsDAL\JoshsJelliesAndJamsDAL.csproj", "{9F8D33E6-CB5D-4ADE-896A-54D447624100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoshsJelliesAndJams.DAL", "JoshsJelliesAndJamsDAL\JoshsJelliesAndJams.DAL.csproj", "{9F8D33E6-CB5D-4ADE-896A-54D447624100}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,13 +6,13 @@ namespace JoshsJelliesAndJams
 {
     public class CustomerModel
     {
-        private static int _customerIdSeed = 1;
-        public int CustomerID { get; }
-        public string FirstName { get; }
-        public string LastName { get; }
-        public string StreetAddress { get; }
-        public string City { get; }
-        public string State { get; }
-        public int Zipcode { get; }
+        public static int _customerIdSeed = 1;
+        public int CustomerID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string StreetAddress { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zipcode { get; set; }
     }
 }

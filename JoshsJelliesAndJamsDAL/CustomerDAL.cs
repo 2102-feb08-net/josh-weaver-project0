@@ -6,5 +6,9 @@ namespace JoshsJelliesAndJamsDAL
 {
     public class CustomerDAL
     {
+        public CustomerDAL(string connectionstring)
+        {
+
+        }
     }
 }

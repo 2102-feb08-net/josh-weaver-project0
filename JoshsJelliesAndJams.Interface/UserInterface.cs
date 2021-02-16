@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoshsJelliesAndJams.BLL;
+using System;
 
 namespace JoshsJelliesAndJams.Interface
 {
@@ -72,16 +73,27 @@ namespace JoshsJelliesAndJams.Interface
             Console.WriteLine("Please enter your zip code:");
             string zipcode = Console.ReadLine();
 
-            //add constructor and pass through the inputted information to BLL.
+            CustomerModel temp = new CustomerModel();
+            temp = CustomerBLL.NewCustomer(firstName, lastName, streetAddress, city, state, int.Parse(zipcode));
 
-            //add in logic to retrieve a customer number from BLL/New customer creation for _customerNumber
+            Console.WriteLine($"{temp}");
+            
+            Console.WriteLine("Is the above information correct? Y/N");
+            if (Console.ReadLine().ToUpper() == "Y")
+            {
+                Console.WriteLine(CustomerBLL.AddCustomer(temp));
+            }
+            else
+            {
+                NewCustomer();
+            }
 
             Selection();
         }
 
         static void NewOrder()
         {
-            OrderModel order = new Order;
+            OrderModel order = new OrderModel();
             string productId;
             string quantity;
             bool addOrder = true;
@@ -113,7 +125,7 @@ namespace JoshsJelliesAndJams.Interface
                     addOrder = false;
             } while (addOrder);
 
-            Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
+            //Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
             Console.ReadLine();
 
             Selection();
