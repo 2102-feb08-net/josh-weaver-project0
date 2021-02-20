@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace JoshsJelliesAndJams
+namespace JoshsJelliesAndJams.Library
 {
     public class OrderModel
     {
