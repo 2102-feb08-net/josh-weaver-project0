@@ -12,77 +12,102 @@ namespace JoshsJelliesAndJams.DAL.Repositories
     public class CustomerRepository : ICustomerRepository
     {
 
-        
-        private DbContextOptions<JoshsJelliesAndJamsContext> optionsBuilder;
-        
-        public void DBConnection()
+        private static DbContextOptions<JoshsJelliesAndJamsContext> optionsBuilder;
+
+
+
+        public void DBConnection(StreamWriter logStream)
         {
-            using var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true };
-            
             string connectionString = File.ReadAllText("C:/Revature/JJJDb.txt");
 
             optionsBuilder = new DbContextOptionsBuilder<JoshsJelliesAndJamsContext>()
                 .UseSqlServer(connectionString)
                 .LogTo(logStream.WriteLine, minimumLevel: LogLevel.Information)
                 .Options;
+            
         }
-        
+
         public void AddCustomer(CustomerModel appCustomer)
         {
-            DBConnection();
-            using var context = new JoshsJelliesAndJamsContext(optionsBuilder);
-
-            IQueryable<Customer> dbCustomer = context.Customers
-                .OrderBy(x => x.CustomerId);
-
-            DateTime dateTime = DateTime.Now;
-
-            var newCustomer = new Customer
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
-                FirstName = appCustomer.FirstName,
-                LastName = appCustomer.LastName,
-                StreetAddress1 = appCustomer.StreetAddress1,
-                StreetAddress2 = appCustomer.StreetAddress2,
-                City = appCustomer.City,
-                State = appCustomer.State,
-                Zipcode = appCustomer.Zipcode,
-                CustomerCreated = dateTime,
-                DefaultStore = null
-            };
-            context.Add(newCustomer);
-            context.SaveChanges();
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
+                    IQueryable<Customer> dbCustomer = context.Customers
+                        .OrderBy(x => x.CustomerId);
 
+                    DateTime dateTime = DateTime.Now;
+
+                    var newCustomer = new Customer
+                    {
+                        FirstName = appCustomer.FirstName,
+                        LastName = appCustomer.LastName,
+                        StreetAddress1 = appCustomer.StreetAddress1,
+                        StreetAddress2 = appCustomer.StreetAddress2,
+                        City = appCustomer.City,
+                        State = appCustomer.State,
+                        Zipcode = appCustomer.Zipcode,
+                        CustomerCreated = dateTime,
+                        DefaultStore = null
+                    };
+                    context.Add(newCustomer);
+                    context.SaveChanges();
+                }
+            }
         }
 
-        public void AddDefaultStore(string store)
+        public void UpdateDefaultStore(CustomerModel appCustomer, string appStore)
         {
-            throw new NotImplementedException();
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
+            {
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
+                    Customer dbCustomer = context.Customers
+                        .Select(c => c)
+                        .Where(c => (c.FirstName == appCustomer.FirstName) && (c.LastName == appCustomer.LastName))
+                        .First();
+
+                    dbCustomer.DefaultStoreId = int.Parse(appCustomer.DefaultStore);
+
+                    context.SaveChanges();
+                }
+            }
         }
 
         public CustomerModel LookupCustomer(string fname, string lname)
         {
-            DBConnection();
-            using var context = new JoshsJelliesAndJamsContext(optionsBuilder);
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
+            {
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
 
-            Customer dbCustomer = context.Customers
-                .Where(c => (c.FirstName == @fname) && (c.LastName == lname))
-                .First();
+                    Customer dbCustomer = context.Customers
+                        .Include(c => c.DefaultStore)
+                        .Where(c => (c.FirstName == @fname) && (c.LastName == lname))
+                        .First();
 
-            CustomerModel appCustomer = new CustomerModel();
-            appCustomer.FirstName = dbCustomer.FirstName;
-            appCustomer.LastName = dbCustomer.LastName;
-            appCustomer.StreetAddress1 = dbCustomer.StreetAddress1;
-            appCustomer.StreetAddress2 = dbCustomer.StreetAddress2;
-            appCustomer.City = dbCustomer.City;
-            appCustomer.State = dbCustomer.State;
-            appCustomer.Zipcode = dbCustomer.Zipcode;
-            appCustomer.DefaultStore = dbCustomer.DefaultStore;
-            
+                    CustomerModel appCustomer = new CustomerModel();
 
-            return appCustomer;
+                    appCustomer.FirstName = dbCustomer.FirstName;
+                    appCustomer.LastName = dbCustomer.LastName;
+                    appCustomer.StreetAddress1 = dbCustomer.StreetAddress1;
+                    appCustomer.StreetAddress2 = dbCustomer.StreetAddress2;
+                    appCustomer.City = dbCustomer.City;
+                    appCustomer.State = dbCustomer.State;
+                    appCustomer.Zipcode = dbCustomer.Zipcode;
+                    appCustomer.DefaultStore = dbCustomer.DefaultStore.Name;
+
+                    return appCustomer;
+
+                }
+            }
+
         }
 
-        public void UpdateCustomer(CustomerModel customer)
+            public void UpdateCustomer(CustomerModel customer)
         {
             throw new NotImplementedException();
         }

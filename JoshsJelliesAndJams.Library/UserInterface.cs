@@ -1,12 +1,15 @@
 ﻿using JoshsJelliesAndJams.Library.IRepositories;
 using System;
-
+using System.Collections.Generic;
 
 namespace JoshsJelliesAndJams.Library
 {
     public class UserInterface
     {
         ICustomerRepository _customerRepository;
+        static CustomerModel _customer;
+        static OrderModel _order;
+        static ProductModel _product;
 
         public UserInterface(ICustomerRepository customerRepository)
         {
@@ -21,20 +24,25 @@ namespace JoshsJelliesAndJams.Library
         private void Welcome()
         {
             Console.WriteLine("Hello and Welcome to Josh's Jellies and Jams!");
-            Console.WriteLine("Are you a new customer or returning customer? Please select a number:");
-            Console.WriteLine($"1- New Customer\t2- Returning Customer");
+            Console.WriteLine("What would you like to do today? Please select a number:");
+            Console.WriteLine("1 - Create a new order\t 2 - Review Order History");
             string response = Console.ReadLine();
+
             if (int.Parse(response) == 1)
             {
-                NewCustomer();
+                NewOrder();
             }
             else if (int.Parse(response) == 2)
             {
-                ReturningCustomer();
+                OrderHistory();
             }
+            //else if (int.Parse(response) == 3)
+            //{
+            //    DefaultStore();
+            //}
             else
             {
-                throw new ArgumentOutOfRangeException("Please select a proper input");
+                throw new ArgumentOutOfRangeException("Please select a proper input.");
             }
         }
 
@@ -44,33 +52,15 @@ namespace JoshsJelliesAndJams.Library
             string firstName = Console.ReadLine().ToUpper();
             Console.WriteLine("What is your last name?");
             string lastName = Console.ReadLine().ToUpper();
-            CustomerModel temp = new CustomerModel();
 
-            temp = _customerRepository.LookupCustomer(firstName, lastName);
+            _customer = _customerRepository.LookupCustomer(firstName, lastName);
+
+            Console.WriteLine($"{_customer.FirstName} {_customer.LastName}\n{_customer.StreetAddress1}\n{_customer.StreetAddress2}\n{_customer.City}, {_customer.State}, {_customer.Zipcode}");
         }
 
         private void Selection()
         {
-            Console.WriteLine("What would you like to do today? Please select a number:");
-            Console.WriteLine("1- Create a new order\t2-Set default store\t3- Review Order History");
-            string response = Console.ReadLine();
 
-            if (int.Parse(response) == 1)
-            {
-                NewOrder();
-            }
-            else if (int.Parse(response) == 2)
-            {
-                DefaultStore();
-            }
-            else if (int.Parse(response) == 3)
-            {
-                OrderHistory();
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Please select a proper input.");
-            }
         }
 
         private void NewCustomer()
@@ -106,26 +96,37 @@ namespace JoshsJelliesAndJams.Library
             string zipcode = Console.ReadLine();
             customer.Zipcode = zipcode;
 
+            _customer = customer;
             _customerRepository.AddCustomer(customer);
-
-            Selection();
         }
 
         private void NewOrder()
         {
-            OrderModel order = new OrderModel();
-            string productId;
-            string quantity;
+            Console.WriteLine("Are you a new customer or returning customer? Please select a number:");
+            Console.WriteLine($"1- New Customer\t2- Returning Customer");
+            string response = Console.ReadLine();
+
+            bool customerResponse = true;
+
+            do
+            {
+                if (int.Parse(response) == 1)
+                {
+                    NewCustomer();
+                    customerResponse = false;
+                }
+                else if (int.Parse(response) == 2)
+                {
+                    ReturningCustomer();
+                    customerResponse = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please select a proper input");
+                }
+            } while (customerResponse);
+            Console.WriteLine();
             bool addOrder = true;
-            //import inventory list from BLL
-
-            Console.WriteLine("Please enter your first name:");
-            string firstName = Console.ReadLine();
-
-            Console.WriteLine("Please enter your last name:");
-            string lastName = Console.ReadLine();
-
-            _customerRepository.LookupCustomer(firstName, lastName);
 
             do
             {

@@ -12,7 +12,7 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         void AddCustomer(CustomerModel model);
 
-        void AddDefaultStore(string store);
+        void UpdateDefaultStore(CustomerModel appCustomer, string appStore);
 
         void UpdateCustomer(CustomerModel customer);
 

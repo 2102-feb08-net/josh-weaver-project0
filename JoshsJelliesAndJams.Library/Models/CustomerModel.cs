@@ -12,7 +12,7 @@ namespace JoshsJelliesAndJams.Library
         private string _city;
         private string _state;
         private string _zipcode;
-        private int _defaultStore; 
+        private string _defaultStore; 
         public int CustomerID { get; set; }
         public string FirstName
         {
@@ -56,10 +56,10 @@ namespace JoshsJelliesAndJams.Library
             set => _zipcode = value.ZipcodeValidator(); 
         }
 
-        public int DefaultStore
+        public string? DefaultStore
         {
             get => _defaultStore;
-            set => DefaultStore = _defaultStore;
+            set => _defaultStore = value.StringValidator();
         }
     }
 }
