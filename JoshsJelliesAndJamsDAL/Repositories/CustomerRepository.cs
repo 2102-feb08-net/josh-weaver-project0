@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using JoshsJelliesAndJams.Library;
 using JoshsJelliesAndJams.Library.IRepositories;
+using JoshsJelliesAndJams.Library.Models;
 
 namespace JoshsJelliesAndJams.DAL.Repositories
 {
     class CustomerRepository : ICustomerRepository
     {
-        public CustomerModel AddCustomer(CustomerModel customer)
+        public void AddCustomer(CustomerModel customer)
         {
-            throw new NotImplementedException();
+            //add customer to db
         }
 
-        public CustomerModel AddDefaultStore(string store)
+        public void AddDefaultStore(string store)
         {
             throw new NotImplementedException();
         }
@@ -25,7 +26,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public CustomerModel UpdateCustomer(CustomerModel customer)
+        public void UpdateCustomer(CustomerModel customer)
         {
             throw new NotImplementedException();
         }

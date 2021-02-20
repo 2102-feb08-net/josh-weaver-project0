@@ -9,12 +9,15 @@ namespace JoshsJelliesAndJams
 {
     public class Program
     {
-
+        //make private fields for db connections
 
         public static void Main(string[] args)
         {
-           Welcome();
+            //assign values for db connection
+            Welcome();
         }
+
+
         static void Welcome()
         {
             Console.WriteLine("Hello and Welcome to Josh's Jellies and Jams!");
@@ -43,7 +46,7 @@ namespace JoshsJelliesAndJams
             string lastName = Console.ReadLine().ToUpper();
             CustomerModel temp = new CustomerModel();
 
-
+            temp = CustomerLookup(firstName, lastName);
         }
 
         static void Selection()
@@ -72,42 +75,52 @@ namespace JoshsJelliesAndJams
 
         static void NewCustomer()
         {
-            //add data validation
+            CustomerModel temp = new CustomerModel();
+            
             Console.WriteLine("Thank you for choosing to be a new customer!");
             Console.WriteLine("Please enter your first name:");
             string firstName = Console.ReadLine();
+            temp.FirstName = firstName;
 
             Console.WriteLine("Please enter your last name:");
             string lastName = Console.ReadLine();
+            temp.LastName = lastName;
 
             Console.WriteLine("Please enter your street address:");
             string streetAddress = Console.ReadLine();
+            temp.StreetAddress1 = streetAddress;
+
+            Console.WriteLine("Please enter your additional address information (Apt, Suite, etc):");
+            string streetAddress2 = Console.ReadLine();
+            temp.StreetAddress2 = streetAddress2;
 
             Console.WriteLine("Please enter your city");
             string city = Console.ReadLine();
+            temp.City = city;
 
             Console.WriteLine("Please enter your state abbriviation:");
             string state = Console.ReadLine();
+            temp.State = state;
 
             Console.WriteLine("Please enter your zip code:");
             string zipcode = Console.ReadLine();
+            temp.Zipcode = int.Parse(zipcode);
 
-            CustomerModel temp = new CustomerModel();
-            temp = NewCustomer(firstName, lastName, streetAddress, city, state, int.Parse(zipcode));
+            AddCustomer(temp);
 
-            Console.WriteLine($"{temp}");
+            //Console.WriteLine($"{temp}");
 
-            Console.WriteLine("Is the above information correct? Y/N");
-            if (Console.ReadLine().ToUpper() == "Y")
-            {
-                //Console.WriteLine(CustomerBLL.AddCustomer(temp));
-            }
-            else
-            {
-                NewCustomer();
-            }
+            //Console.WriteLine("Is the above information correct? Y/N");
+            //if (Console.ReadLine().ToUpper() == "Y")
+            //{
+            //    //Console.WriteLine(CustomerBLL.AddCustomer(temp));
+            //}
+            //else
+            //{
+            //    NewCustomer();
+            //}
 
-            Selection();
+            //Selection();
         }
 
         static void NewOrder()

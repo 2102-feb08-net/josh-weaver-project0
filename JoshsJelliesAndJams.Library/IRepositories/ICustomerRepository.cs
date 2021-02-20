@@ -8,13 +8,13 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 {
     public interface ICustomerRepository
     {
-        CustomerModel LookupCustomer(string fname, string lname);
+        CustomerModel LookupCustomer(string firstName, string lastName);
 
-        CustomerModel AddCustomer(CustomerModel customer);
+        void AddCustomer(CustomerModel model);
 
-        CustomerModel AddDefaultStore(string store);
+        void AddDefaultStore(string store);
 
-        CustomerModel UpdateCustomer(CustomerModel customer);
+        void UpdateCustomer(CustomerModel customer);
 
     }
 }
