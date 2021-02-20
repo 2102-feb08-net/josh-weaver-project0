@@ -36,7 +36,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 .OrderBy(x => x.CustomerId);
 
             DateTime dateTime = DateTime.Now;
-            
+
             var newCustomer = new Customer
             {
                 FirstName = appCustomer.FirstName,
@@ -49,16 +49,8 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 CustomerCreated = dateTime,
                 DefaultStore = null
             };
-
-            //    foreach (var item in dbCustomer)
-            //{
-            //    if(item.Contains(newCustomer.FirstName) && item.Contains(newCustomer.LastName))
-            //    {
-            //        throw new Exception("Customer already exists in database.");
-            //    }
-                context.Add(newCustomer);
-                context.SaveChanges();
-            //}    
+            context.Add(newCustomer);
+            context.SaveChanges();
 
         }
 
@@ -66,10 +58,28 @@ namespace JoshsJelliesAndJams.DAL.Repositories
         {
             throw new NotImplementedException();
         }
-        
+
         public CustomerModel LookupCustomer(string fname, string lname)
         {
-            throw new NotImplementedException();
+            DBConnection();
+            using var context = new JoshsJelliesAndJamsContext(optionsBuilder);
+
+            Customer dbCustomer = context.Customers
+                .Where(c => (c.FirstName == @fname) && (c.LastName == lname))
+                .First();
+
+            CustomerModel appCustomer = new CustomerModel();
+            appCustomer.FirstName = dbCustomer.FirstName;
+            appCustomer.LastName = dbCustomer.LastName;
+            appCustomer.StreetAddress1 = dbCustomer.StreetAddress1;
+            appCustomer.StreetAddress2 = dbCustomer.StreetAddress2;
+            appCustomer.City = dbCustomer.City;
+            appCustomer.State = dbCustomer.State;
+            appCustomer.Zipcode = dbCustomer.Zipcode;
+            appCustomer.DefaultStore = dbCustomer.DefaultStore;
+            
+
+            return appCustomer;
         }
 
         public void UpdateCustomer(CustomerModel customer)

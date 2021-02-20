@@ -108,19 +108,7 @@ namespace JoshsJelliesAndJams.Library
 
             _customerRepository.AddCustomer(customer);
 
-            //Console.WriteLine($"{temp}");
-
-            //Console.WriteLine("Is the above information correct? Y/N");
-            //if (Console.ReadLine().ToUpper() == "Y")
-            //{
-            //    //Console.WriteLine(CustomerBLL.AddCustomer(temp));
-            //}
-            //else
-            //{
-            //    NewCustomer();
-            //}
-
-            //Selection();
+            Selection();
         }
 
         private void NewOrder()
@@ -137,8 +125,7 @@ namespace JoshsJelliesAndJams.Library
             Console.WriteLine("Please enter your last name:");
             string lastName = Console.ReadLine();
 
-            //logic to find customer name in DB (through BLL)
-            //if customer not found, return an error and allow for reinput or add new customer.
+            _customerRepository.LookupCustomer(firstName, lastName);
 
             do
             {
