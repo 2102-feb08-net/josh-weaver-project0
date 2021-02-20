@@ -32,14 +32,15 @@ namespace JoshsJelliesAndJams.Library.Validator
             return value.ToUpper();
         }
 
-        public static int ZipcodeValidator(this int value)
+        public static string ZipcodeValidator(this string value)
         {
-            if (value != 5)
+            if (value.Length != 5)
             {
                 throw new Exception("Invalid Zipcode.");
             }
 
             return value;
+        }
 
         public static int OrderValidator(this int value)
         {

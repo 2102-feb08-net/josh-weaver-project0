@@ -11,7 +11,7 @@ namespace JoshsJelliesAndJams.Library
         private string _address2;
         private string _city;
         private string _state;
-        private int _zipcode;
+        private string _zipcode;
         private string _defaultStore; 
         public int CustomerID { get; set; }
         public string FirstName
@@ -50,7 +50,7 @@ namespace JoshsJelliesAndJams.Library
             set => _state = value.StateValidator();
         }
 
-        public int Zipcode 
+        public string Zipcode 
         { 
             get => _zipcode; 
             set => _zipcode = value.ZipcodeValidator(); 
