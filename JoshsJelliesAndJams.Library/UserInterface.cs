@@ -9,17 +9,16 @@ namespace JoshsJelliesAndJams.Library
         ICustomerRepository _customerRepository;
         IOrderRepository _orderRepository;
         IStoreRepository _storeRepository;
-        IProductRepository _productRepository;
+
         static CustomerModel _customer;
         static OrderModel _order;
         static ProductModel _product;
 
-        public UserInterface(ICustomerRepository customerRepository)
+        public UserInterface(ICustomerRepository customerRepository, IOrderRepository orderRepository, IStoreRepository storeRepository)
         {
             _customerRepository = customerRepository;
-            _orderRepository = new OrderRepository();
-            _storeRepository = new StoreRepository();
-            _productRepository = new ProductRepository();
+            _orderRepository = orderRepository;
+            _storeRepository = storeRepository;
         }
 
         public void Run()
@@ -44,7 +43,7 @@ namespace JoshsJelliesAndJams.Library
             }
             else if (response.Equals("Management"))
             {
-                ManagementMenu();
+                //ManagementMenu();
             }
             else
             {
@@ -69,7 +68,7 @@ namespace JoshsJelliesAndJams.Library
             string response = Console.ReadLine();
             if (response.Equals("N"))
             {
-                Console.WriteLine("Would you like to quit? Y/N"));
+                Console.WriteLine("Would you like to quit? Y/N");
                 string secondResponse = Console.ReadLine();
                 if (secondResponse.Equals("Y"))
                 {
@@ -153,20 +152,22 @@ namespace JoshsJelliesAndJams.Library
             Console.WriteLine();
             bool addOrder = true;
 
+            
+
             do
             {
                 //add a list of inventory (probably with a loop), data validation, etc)
 
                 Console.WriteLine("Please select a product:");
-                productId = Console.ReadLine();
+                //productId = Console.ReadLine();
 
                 Console.WriteLine("Please add a quantity:");
-                quantity = Console.ReadLine();
+                //quantity = Console.ReadLine();
 
                 //add list to order model
 
                 Console.WriteLine("Would you like to add anything else to your order? Y/N");
-                if (Console.ReadLine().Contains("N"))
+                if (Console.ReadLine().Equals("N"))
                     addOrder = false;
             } while (addOrder);
 

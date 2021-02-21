@@ -24,7 +24,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 .UseSqlServer(connectionString)
                 .LogTo(logStream.WriteLine, minimumLevel: LogLevel.Information)
                 .Options;
-            
+
         }
 
         public void AddCustomer(CustomerModel appCustomer)
@@ -107,7 +107,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
 
         }
 
-            public void UpdateCustomer(CustomerModel customer)
+        public void UpdateCustomer(CustomerModel customer)
         {
             throw new NotImplementedException();
         }

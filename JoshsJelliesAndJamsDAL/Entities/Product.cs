@@ -11,7 +11,6 @@ namespace JoshsJelliesAndJams.DAL
         {
             Inventories = new HashSet<Inventory>();
             OrderDetails = new HashSet<OrderDetail>();
-            Orders = new HashSet<Order>();
         }
 
         public int ProductId { get; set; }
@@ -20,6 +19,5 @@ namespace JoshsJelliesAndJams.DAL
 
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }

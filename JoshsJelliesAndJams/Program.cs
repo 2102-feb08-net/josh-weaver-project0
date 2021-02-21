@@ -7,7 +7,7 @@ namespace JoshsJelliesAndJams
     {
         public static void Main(string[] args)
         {            
-            UserInterface run = new UserInterface(new CustomerRepository());
+            UserInterface run = new UserInterface(new CustomerRepository(), new OrderRepository(), new StoreRepository());
             run.Run();
         }
     }

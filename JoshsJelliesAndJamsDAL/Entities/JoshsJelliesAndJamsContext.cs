@@ -90,32 +90,27 @@ namespace JoshsJelliesAndJams.DAL
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__656C112C");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Orders__ProductI__66603565");
+                    .HasConstraintName("FK__Orders__Customer__7D439ABD");
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StoreId)
-                    .HasConstraintName("FK__Orders__StoreId__6754599E");
+                    .HasConstraintName("FK__Orders__StoreId__7E37BEF6");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.Property(e => e.Price).HasColumnType("money");
+                entity.Property(e => e.TotalCost).HasColumnType("money");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__OrderDeta__Order__74AE54BC");
+                    .HasConstraintName("FK__OrderDeta__Order__01142BA1");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__OrderDeta__Produ__75A278F5");
+                    .HasConstraintName("FK__OrderDeta__Produ__02084FDA");
             });
 
             modelBuilder.Entity<Product>(entity =>
