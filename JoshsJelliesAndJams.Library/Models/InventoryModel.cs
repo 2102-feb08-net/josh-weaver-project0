@@ -9,6 +9,7 @@ namespace JoshsJelliesAndJams.Library.Models
     public class InventoryModel
     {
         public int StoreID { get; set; }
-        public List<ProductModel> Products { get; set; }
+        public string Products { get; set; }
+        public double Price { get; set; }
     }
 }

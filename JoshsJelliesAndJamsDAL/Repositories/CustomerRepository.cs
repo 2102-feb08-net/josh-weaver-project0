@@ -89,16 +89,17 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(c => (c.FirstName == @fname) && (c.LastName == lname))
                         .First();
 
-                    CustomerModel appCustomer = new CustomerModel();
-
-                    appCustomer.FirstName = dbCustomer.FirstName;
-                    appCustomer.LastName = dbCustomer.LastName;
-                    appCustomer.StreetAddress1 = dbCustomer.StreetAddress1;
-                    appCustomer.StreetAddress2 = dbCustomer.StreetAddress2;
-                    appCustomer.City = dbCustomer.City;
-                    appCustomer.State = dbCustomer.State;
-                    appCustomer.Zipcode = dbCustomer.Zipcode;
-                    appCustomer.DefaultStore = dbCustomer.DefaultStore.Name;
+                    CustomerModel appCustomer = new CustomerModel
+                    {
+                        FirstName = dbCustomer.FirstName,
+                        LastName = dbCustomer.LastName,
+                        StreetAddress1 = dbCustomer.StreetAddress1,
+                        StreetAddress2 = dbCustomer.StreetAddress2,
+                        City = dbCustomer.City,
+                        State = dbCustomer.State,
+                        Zipcode = dbCustomer.Zipcode,
+                        DefaultStore = dbCustomer.DefaultStore.Name
+                    };
 
                     return appCustomer;
 

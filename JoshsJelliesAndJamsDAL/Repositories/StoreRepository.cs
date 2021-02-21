@@ -23,7 +23,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 .Options;
 
         }
-        public void AddInventory(List<ProductModel> productList)
+        public void AddInventory(List<Library.ProductModel> productList)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -59,7 +59,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             }
         }
 
-        public void RemoveInventory(List<ProductModel> productList)
+        public void RemoveInventory(List<Library.ProductModel> productList)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {

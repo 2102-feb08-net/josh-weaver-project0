@@ -5,6 +5,8 @@ namespace JoshsJelliesAndJams.Library
 {
     public class CustomerModel
     {
+#nullable
+
         private string _firstName;
         private string _lastName;
         private string _address1;
