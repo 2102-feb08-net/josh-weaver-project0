@@ -7,6 +7,9 @@ namespace JoshsJelliesAndJams.Library
     public class UserInterface
     {
         ICustomerRepository _customerRepository;
+        IOrderRepository _orderRepository;
+        IStoreRepository _storeRepository;
+        IProductRepository _productRepository;
         static CustomerModel _customer;
         static OrderModel _order;
         static ProductModel _product;
@@ -14,6 +17,9 @@ namespace JoshsJelliesAndJams.Library
         public UserInterface(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
+            _orderRepository = new OrderRepository();
+            _storeRepository = new StoreRepository();
+            _productRepository = new ProductRepository();
         }
 
         public void Run()
@@ -36,13 +42,15 @@ namespace JoshsJelliesAndJams.Library
             {
                 OrderHistory();
             }
-            //else if (int.Parse(response) == 3)
-            //{
-            //    DefaultStore();
-            //}
+            else if (response.Equals("Management"))
+            {
+                ManagementMenu();
+            }
             else
             {
-                throw new ArgumentOutOfRangeException("Please select a proper input.");
+                Console.WriteLine("Please select a proper input.");
+                Console.WriteLine();
+                Welcome();
             }
         }
 
@@ -56,6 +64,22 @@ namespace JoshsJelliesAndJams.Library
             _customer = _customerRepository.LookupCustomer(firstName, lastName);
 
             Console.WriteLine($"{_customer.FirstName} {_customer.LastName}\n{_customer.StreetAddress1}\n{_customer.StreetAddress2}\n{_customer.City}, {_customer.State}, {_customer.Zipcode}");
+            Console.WriteLine();
+            Console.WriteLine("Is the above information correct? Y/N");
+            string response = Console.ReadLine();
+            if (response.Equals("N"))
+            {
+                Console.WriteLine("Would you like to quit? Y/N"));
+                string secondResponse = Console.ReadLine();
+                if (secondResponse.Equals("Y"))
+                {
+                    Welcome();
+                }
+                else
+                {
+                    ReturningCustomer();
+                }
+            }
         }
 
         private void Selection()
@@ -125,6 +149,7 @@ namespace JoshsJelliesAndJams.Library
                     Console.WriteLine("Please select a proper input");
                 }
             } while (customerResponse);
+
             Console.WriteLine();
             bool addOrder = true;
 
@@ -148,7 +173,7 @@ namespace JoshsJelliesAndJams.Library
             //Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
             Console.ReadLine();
 
-            Selection();
+            Welcome();
 
         }
 

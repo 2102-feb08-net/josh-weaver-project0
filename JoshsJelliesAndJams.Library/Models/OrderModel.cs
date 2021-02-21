@@ -6,8 +6,7 @@ namespace JoshsJelliesAndJams.Library
 {
     public class OrderModel
     {
-        private static int _orderNumberSeed = 1;
-        public int OrderNumber { get; }
+        public int OrderNumber { get; set; }
         public List<ProductModel> Product { get; set; }
         public int CustomerNumber { get; }
     }
