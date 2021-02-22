@@ -13,9 +13,9 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         List<OrderModel> StoreHistory(string storeName);
 
-        List<ProductModel> CheckInventory(int storeID);
+        List<InventoryModel> CheckInventory(int storeID);
 
-        List<ProductModel> CheckInventory(string storeName);
+        List<InventoryModel> CheckInventory(string storeName);
 
     }
 }

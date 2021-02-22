@@ -25,7 +25,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
 
         }
 
-        public List<ProductModel> CheckInventory(int storeID)
+        public List<InventoryModel> CheckInventory(int storeID)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -37,7 +37,22 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.StoreId.Equals(storeID))
                         .ToList();
 
+<<<<<<< HEAD
                     List<ProductModel> appInventory = Inventory(dbInventory);
+=======
+                    List<InventoryModel> appInventory = new List<InventoryModel>();
+
+
+                    foreach (var item in dbInventory)
+                    {
+                        InventoryModel listItem = new InventoryModel
+                        {
+                            Products = item.Product.Name,
+                            Price = item.Product.Price
+                        };
+                        appInventory.Add(listItem);
+                    }
+>>>>>>> parent of 51e3bcf (minor changes to store repository)
 
                     return appInventory;
 
@@ -45,7 +60,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             }
         }
 
-        public List<ProductModel> CheckInventory(string storeName)
+        public List<InventoryModel> CheckInventory(string storeName)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -57,7 +72,22 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                        .Where(x => x.StoreId.Equals(storeName))
                        .ToList();
 
+<<<<<<< HEAD
                     List<ProductModel> appInventory = Inventory(dbInventory)
+=======
+                    List<InventoryModel> appInventory = new List<InventoryModel>();
+
+
+                    foreach (var item in dbInventory)
+                    {
+                        InventoryModel listItem = new InventoryModel
+                        {
+                            Products = item.Product.Name,
+                            Price = item.Product.Price
+                        };
+                        appInventory.Add(listItem);
+                    }
+>>>>>>> parent of 51e3bcf (minor changes to store repository)
 
                     return appInventory;
                 }
