@@ -36,7 +36,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             }
         }
 
-        public List<InventoryModel> CheckInventory(int storeID)
+        public List<ProductModel> CheckInventory(int storeID)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -48,15 +48,15 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.StoreId.Equals(storeID))
                         .ToList();
 
-                    List<InventoryModel> appInventory = new List<InventoryModel>();
+                    List<ProductModel> appInventory = new List<ProductModel>();
 
 
                     foreach (var item in dbInventory)
                     {
-                        InventoryModel listItem = new InventoryModel
+                        ProductModel listItem = new ProductModel
                         {
-                            Products = item.Product.Name,
-                            Price = item.Product.Price
+                            Name = item.Product.Name,
+                            Quantity = item.Product.Quantity
                         };
                         appInventory.Add(listItem);
                     }
@@ -67,7 +67,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             }
         }
 
-        public List<InventoryModel> CheckInventory(string storeName)
+        public List<ProductModel> CheckInventory(string storeName)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -79,15 +79,15 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                        .Where(x => x.StoreId.Equals(storeName))
                        .ToList();
 
-                    List<InventoryModel> appInventory = new List<InventoryModel>();
+                    List<ProductModel> appInventory = new List<ProductModel>();
 
 
                     foreach (var item in dbInventory)
                     {
-                        InventoryModel listItem = new InventoryModel
+                        ProductModel listItem = new ProductModel
                         {
-                            Products = item.Product.Name,
-                            Price = item.Product.Price
+                            Name = item.Product.Name,
+                            Quantity = item.Product.Quantity
                         };
                         appInventory.Add(listItem);
                     }
