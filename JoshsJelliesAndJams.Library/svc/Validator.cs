@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JoshsJelliesAndJams.Library.Validator
+namespace JoshsJelliesAndJams.Library.svc
 {
     public static class Validator
     {
