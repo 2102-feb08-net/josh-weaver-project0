@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using JoshsJelliesAndJams.Library;
 using JoshsJelliesAndJams.Library.IRepositories;
+using JoshsJelliesAndJams.Library.svc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +44,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Include(x => x.Order)
                         .OrderBy(x => x.Order.OrderId).Last();
 
-                    OrderDetail orderDetailList = NewDetail(appOrder, dbOrderDetails);
+                    OrderDetail orderDetailList = CustomerSvcs.NewDetail(appOrder, dbOrderDetails);
 
                     context.Add(orderDetailList);
                     context.SaveChanges();
@@ -77,18 +78,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.CustomerId.Equals(appCustomer.CustomerID))
                         .ToList();
 
-                    List<OrderModel> appOrder = new List<OrderModel>();
-
-                    foreach(var item in dbOrder)
-                    {
-                        OrderModel lineItem = new OrderModel
-                        {
-                            OrderPlaced = (DateTime) item.DatePlaced,
-                            NumberOfProducts = item.NumberOfProducts,
-                            Total = item.OrderTotal
-                        };
-                        appOrder.Add(lineItem);
-                    }
+                    List<OrderModel> appOrder = OrderHistory(appCustomer, dbOrder);
 
                     return appOrder;
                 }
@@ -107,39 +97,11 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.OrderId.Equals(orderID))
                         .ToList();
 
-                    List<ProductModel> results = new List<ProductModel>();
-
-
-                    foreach (var item in dbOrderDetails)
-                    {
-                        ProductModel itemResult = new ProductModel
-                        {
-                            Name = item.Product.Name,
-                            CostPerItem = item.Product.Price
-                        };
-                        results.Add(itemResult);
-                    }
+                    List<ProductModel> results = OrderDetailHistory(orderID, dbOrderDetails);
 
                     return results;
                 }
             }
-        }
-
-        public void AddOrderDetails(OrderModel appOrder)
-        {
-            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
-            {
-                DBConnection(logStream);
-                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
-                {
-
-                }
-            }
-        }
-
-        public int AddOrderSummary(OrderModel appOrder)
-        {
-            throw new NotImplementedException();
         }
     }
 }

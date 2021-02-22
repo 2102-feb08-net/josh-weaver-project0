@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace JoshsJelliesAndJams.Library.svc
@@ -63,6 +64,40 @@ namespace JoshsJelliesAndJams.Library.svc
             }
 
             return inventoryAdjustments;
+        }
+
+        public List<OrderModel> OrderHistory(CustomerModel appCustomer, Order dbOrder)
+        {
+            List<OrderModel> appOrder = new List<OrderModel>();
+
+            foreach (var item in dbOrder)
+            {
+                OrderModel lineItem = new OrderModel
+                {
+                    OrderPlaced = (DateTime)item.DatePlaced,
+                    NumberOfProducts = item.NumberOfProducts,
+                    Total = item.OrderTotal
+                };
+                appOrder.Add(lineItem);
+            }
+            return appOrder;
+        }
+
+        public List<ProductModel> OrderDetailHistory(int orderID, OrderDetail dbOrderDetail)
+        {
+            List<ProductModel> results = new List<ProductModel>();
+
+
+            foreach (var item in dbOrderDetails)
+            {
+                ProductModel itemResult = new ProductModel
+                {
+                    Name = item.Product.Name,
+                    CostPerItem = item.Product.Price
+                };
+                results.Add(itemResult);
+            }
+            return results;
         }
     }
 }

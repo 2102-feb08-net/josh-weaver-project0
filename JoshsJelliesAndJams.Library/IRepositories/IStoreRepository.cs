@@ -17,9 +17,5 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         List<ProductModel> CheckInventory(string storeName);
 
-        void AddInventory(List<ProductModel> productList);
-
-        void RemoveInventory(List<ProductModel> productList);
-
     }
 }

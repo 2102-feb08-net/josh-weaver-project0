@@ -14,7 +14,5 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         void UpdateDefaultStore(CustomerModel appCustomer, string appStore);
 
-        void UpdateCustomer(CustomerModel customer);
-
     }
 }

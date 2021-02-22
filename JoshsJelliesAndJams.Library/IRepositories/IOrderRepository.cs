@@ -13,10 +13,6 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         string AddOrder(OrderModel appOrder);
 
-        void AddOrderDetails(OrderModel appOrder);
-
-        int AddOrderSummary(OrderModel appOrder);
-
         List<ProductModel> SeeDetails(int orderID);
     }
 }

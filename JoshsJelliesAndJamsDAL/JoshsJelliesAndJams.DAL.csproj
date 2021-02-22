@@ -16,4 +16,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\JoshsJelliesAndJams.Library\JoshsJelliesAndJams.Library.csproj" />
 	</ItemGroup>
+	
 </Project>
