@@ -32,13 +32,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
                     Order dbOrder = context.Orders.OrderBy(x => x.OrderId).Last();
-                    OrderDetail dbOrderDetails = context.OrderDetails.OrderBy(x => x.OrderId).Last();
-                    List<Inventory> dbInventory = context.Inventories
-                        .Select(x => x)
-                        .Include(x => x.Product)
-                        .Where(x => appOrder.StoreID.Equals(x.StoreId))
-                        .ToList();
-
+                    
                     DateTime dateTime = DateTime.Now;
                     
                     Order newOrder = new Order
@@ -50,46 +44,67 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         DatePlaced = dateTime
                     };
 
+                    context.Add(newOrder);
+                    context.SaveChanges();
+
+
+                    OrderDetail dbOrderDetails = context.OrderDetails
+                        .Include(x => x.Order)
+                        .OrderBy(x => x.Order.OrderId).Last();
+
                     List<OrderDetail> orderDetailList = new List<OrderDetail>();
 
                     foreach (var product in appOrder.Product)
                     {
                         OrderDetail newDetail = new OrderDetail
                         {
-                            OrderId = appOrder.StoreID,
+                            OrderId = dbOrderDetails.Order.OrderId,
                             ProductId = product.ProductId,
                             Quantity = product.Quantity,
                             TotalCost = product.Quantity * product.CostPerItem
                         };
-
                         orderDetailList.Add(newDetail);
                     }
+                    context.Add(orderDetailList);
+                    context.SaveChanges();
+
+
+
+                    List<Inventory> dbInventory = context.Inventories
+                        .Include(x => x.Product)
+                        .Where(x => appOrder.StoreID.Equals(x.StoreId))
+                        .ToList();
 
                     List<Inventory> inventoryAdjustments = new List<Inventory>();
+                    
 
-                    foreach (var product in appOrder.Product)
+                    for(int prod = 0; prod < appOrder.Product.Count; prod++)
                     {
-                        if (product.ProductId.Equals(dbInventory.Product.ProductId))
+                        for(int inv = 0; inv < dbInventory.Count; inv++)
                         {
-                            Inventory newInventory = new Inventory
+                            if (appOrder.Product[prod].ProductId == dbInventory[inv].ProductId)
                             {
-                                StoreId = dbInventory.StoreId,
-                                ProductId = product.ProductId,
-                                Product = product.Quantity - dbInventory.Product.Quantity,
-
-                            };
+                                Inventory newInventory = new Inventory
+                                {
+                                    StoreId = appOrder.StoreID,
+                                    ProductId = appOrder.Product[prod].ProductId,
+                                    Quantity = appOrder.Product[prod].Quantity - dbInventory[inv].Quantity
+                                };
+                                inventoryAdjustments.Add(newInventory);
+                            }
                         }
                     }
-                    Console.WriteLine($"Thank you! Your order number is {dbOrder.OrderId}.");
-                    context.Add(newOrder);
-                    context.Add(orderDetailList);
+
                     context.Add(inventoryAdjustments);
                     context.SaveChanges();
+
+                    return ($"Thank you! Your order number is {dbOrder.OrderId}.");
+
                 }
             }
         }
 
-        public List<Order> PullHistory(CustomerModel appCustomer)
+        public List<OrderModel> PullHistory(CustomerModel appCustomer)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -97,16 +112,28 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
                     List<Order> dbOrder = context.Orders
-                        .Select(x => x)
                         .Where(x => x.CustomerId.Equals(appCustomer.CustomerID))
                         .ToList();
 
-                    return dbOrder;
+                    List<OrderModel> appOrder = new List<OrderModel>();
+
+                    foreach(var item in dbOrder)
+                    {
+                        OrderModel lineItem = new OrderModel
+                        {
+                            OrderPlaced = (DateTime) item.DatePlaced,
+                            NumberOfProducts = item.NumberOfProducts,
+                            Total = item.OrderTotal
+                        };
+                        appOrder.Add(lineItem);
+                    }
+
+                    return appOrder;
                 }
             }
         }
 
-        public List<OrderDetail> SeeDetails(int orderID)
+        public List<ProductModel> SeeDetails(int orderID)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
@@ -114,41 +141,43 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
                     List<OrderDetail> dbOrderDetails = context.OrderDetails
-                        .Select(x => x)
                         .Include(x => x.Product)
                         .Where(x => x.OrderId.Equals(orderID))
                         .ToList();
 
-                    List<ProductModel> results = new List<ProductModel>;
+                    List<ProductModel> results = new List<ProductModel>();
 
-                    foreach(var item in dbOrderDetails)
+
+                    foreach (var item in dbOrderDetails)
                     {
-                        results.
+                        ProductModel itemResult = new ProductModel
+                        {
+                            Name = item.Product.Name,
+                            CostPerItem = item.Product.Price
+                        };
+                        results.Add(itemResult);
                     }
 
-                    return dbOrderDetails;
+                    return results;
                 }
             }
         }
 
-        //public void AddOrderDetails(OrderModel appOrder)
-        //{
-        //    using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
-        //    {
-        //        DBConnection(logStream);
-        //        using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
-        //        {
-        //            IQueryable<Order> dbOrder = context.OrderDetails
-        //                .Include(p => p.Product)
-        //                .Orderby(x => x.OrderId)
-        //                .ToList();
-        //        }
-        //    }
-        //}
+        public void AddOrderDetails(OrderModel appOrder)
+        {
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
+            {
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
 
-        //public int AddOrderSummary(OrderModel appOrder)
-        //{
-        //    throw new NotImplementedException();
-        //}
+                }
+            }
+        }
+
+        public int AddOrderSummary(OrderModel appOrder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

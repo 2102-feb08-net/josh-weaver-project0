@@ -65,12 +65,12 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
                     Customer dbCustomer = context.Customers
-                        .Select(c => c)
                         .Where(c => (c.FirstName == appCustomer.FirstName) && (c.LastName == appCustomer.LastName))
                         .First();
 
-                    dbCustomer.DefaultStoreId = int.Parse(appCustomer.DefaultStore);
 
+                    dbCustomer.DefaultStoreId = int.Parse(appCustomer.DefaultStore);
+                    
                     context.SaveChanges();
                 }
             }

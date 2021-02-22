@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using JoshsJelliesAndJams.Library;
 using JoshsJelliesAndJams.Library.IRepositories;
+using JoshsJelliesAndJams.Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -30,31 +31,68 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 DBConnection(logStream);
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
-
+                    
                 }
             }
         }
 
-        public OrderModel CheckInventory(int storeID)
+        public List<InventoryModel> CheckInventory(int storeID)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
                 DBConnection(logStream);
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
-                    return null;
+                    var dbInventory = context.Inventories
+                        .Include(x => x.Product)
+                        .Where(x => x.StoreId.Equals(storeID))
+                        .ToList();
+
+                    List<InventoryModel> appInventory = new List<InventoryModel>();
+
+
+                    foreach (var item in dbInventory)
+                    {
+                        InventoryModel listItem = new InventoryModel
+                        {
+                            Products = item.Product.Name,
+                            Price = item.Product.Price
+                        };
+                        appInventory.Add(listItem);
+                    }
+
+                    return appInventory;
+
                 }
             }
         }
 
-        public OrderModel CheckInventory(string storeName)
+        public List<InventoryModel> CheckInventory(string storeName)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
                 DBConnection(logStream);
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
-                    return null;
+                    var dbInventory = context.Inventories
+                       .Include(x => x.Product)
+                       .Where(x => x.StoreId.Equals(storeName))
+                       .ToList();
+
+                    List<InventoryModel> appInventory = new List<InventoryModel>();
+
+
+                    foreach (var item in dbInventory)
+                    {
+                        InventoryModel listItem = new InventoryModel
+                        {
+                            Products = item.Product.Name,
+                            Price = item.Product.Price
+                        };
+                        appInventory.Add(listItem);
+                    }
+
+                    return appInventory;
                 }
             }
         }
@@ -71,26 +109,60 @@ namespace JoshsJelliesAndJams.DAL.Repositories
             }
         }
 
-        public OrderModel StoreHistory(int storeID)
+        public List<OrderModel> StoreHistory(int storeId)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
                 DBConnection(logStream);
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
-                    return null;
+                    List<Order> dbOrder = context.Orders
+                        .Where(x => x.StoreId.Equals(storeId))
+                        .ToList();
+
+                    List<OrderModel> appOrder = new List<OrderModel>();
+
+                    foreach(var item in dbOrder)
+                    {
+                        OrderModel lineItem = new OrderModel
+                        {
+                            OrderNumber = item.OrderId,
+                            OrderPlaced = (DateTime)item.DatePlaced,
+                            Total = item.OrderTotal
+                        };
+                        appOrder.Add(lineItem);
+                    }
+
+                    return appOrder;
                 }
             }
         }
 
-        public OrderModel StoreHistory(string storeName)
+        public List<OrderModel> StoreHistory(string storeName)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {
                 DBConnection(logStream);
                 using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
                 {
-                    return null;
+                    List<Order> dbOrder = context.Orders
+                     .Where(x => x.StoreId.Equals(storeName))
+                     .ToList();
+
+                    List<OrderModel> appOrder = new List<OrderModel>();
+
+                    foreach (var item in dbOrder)
+                    {
+                        OrderModel lineItem = new OrderModel
+                        {
+                            OrderNumber = item.OrderId,
+                            OrderPlaced = (DateTime)item.DatePlaced,
+                            Total = item.OrderTotal
+                        };
+                        appOrder.Add(lineItem);
+                    }
+
+                    return appOrder;
                 }
             }
         }

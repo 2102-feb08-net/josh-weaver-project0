@@ -21,7 +21,7 @@ namespace JoshsJelliesAndJams.DAL
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<ProductModel> Products { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace JoshsJelliesAndJams.DAL
                     .HasConstraintName("FK__OrderDeta__Produ__02084FDA");
             });
 
-            modelBuilder.Entity<ProductModel>(entity =>
+            modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("Product");
 

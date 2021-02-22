@@ -5,8 +5,6 @@ namespace JoshsJelliesAndJams.Library
 {
     public class CustomerModel
     {
-#nullable
-
         private string _firstName;
         private string _lastName;
         private string _address1;
@@ -58,6 +56,7 @@ namespace JoshsJelliesAndJams.Library
             set => _zipcode = value.ZipcodeValidator(); 
         }
 
+#nullable enable
         public string? DefaultStore
         {
             get => _defaultStore;

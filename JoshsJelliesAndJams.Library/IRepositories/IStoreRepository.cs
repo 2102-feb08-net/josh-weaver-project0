@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoshsJelliesAndJams.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,13 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 {
     public interface IStoreRepository
     {
-        OrderModel StoreHistory(int storeID);
+        List<OrderModel> StoreHistory(int storeID);
 
-        OrderModel StoreHistory(string storeName);
+        List<OrderModel> StoreHistory(string storeName);
 
-        OrderModel CheckInventory(int storeID);
+        List<InventoryModel> CheckInventory(int storeID);
 
-        OrderModel CheckInventory(string storeName);
+        List<InventoryModel> CheckInventory(string storeName);
 
         void AddInventory(List<ProductModel> productList);
 

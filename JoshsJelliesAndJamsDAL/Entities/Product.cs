@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace JoshsJelliesAndJams.DAL
 {
-    public partial class ProductModel
+    public partial class Product
     {
-        public ProductModel()
+        public Product()
         {
             Inventories = new HashSet<Inventory>();
             OrderDetails = new HashSet<OrderDetail>();

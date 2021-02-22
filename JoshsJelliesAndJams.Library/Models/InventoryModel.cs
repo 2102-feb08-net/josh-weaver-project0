@@ -10,6 +10,6 @@ namespace JoshsJelliesAndJams.Library.Models
     {
         public int StoreID { get; set; }
         public string Products { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
