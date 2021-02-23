@@ -88,10 +88,8 @@ namespace JoshsJelliesAndJams.Library
 
             List<ProductModel> productList = _storeRepository.CheckInventory(_customer.DefaultStore);
 
-            for(int i = 0; i < productList.Count; i += 3)
-                Console.WriteLine($"{productList[i].ProductId} - {productList[i].Name}\t {productList[i].CostPerItem:C2}\t\t"+
-                                    $"{productList[i+1].ProductId} - {productList[i+1].Name}\t {productList[i+1].CostPerItem:C2}\t\t"+
-                                    $"{productList[i+2].ProductId} - {productList[i+2].Name}\t {productList[i+2].CostPerItem:C2}");
+            for (int i = 0; i < productList.Count; i++)
+                Console.WriteLine($"{productList[i].ProductId} - {productList[i].Name}\t {productList[i].CostPerItem:C2}\t\t");
 
             
             List<ProductModel> orderList = new List<ProductModel>();

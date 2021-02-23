@@ -71,31 +71,46 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         context.SaveChanges();
                     }
 
-
-
-                    List<Inventory> dbInventory = context.Inventories
-                        .Include(x => x.Product)
-                        .Where(x => appOrder.StoreID.Equals(x.StoreId))
-                        .ToList();
-
-
                     for (int prod = 0; prod < appOrder.Product.Count; prod++)
                     {
-                        for (int inv = 0; inv < dbInventory.Count; inv++)
-                        {
-                            if (appOrder.Product[prod].ProductId == dbInventory[inv].ProductId)
-                            {
-                                Inventory newInventory = new Inventory
-                                {
-                                    StoreId = appOrder.StoreID,
-                                    ProductId = appOrder.Product[prod].ProductId,
-                                    Quantity = dbInventory[inv].Quantity - appOrder.Product[prod].Quantity
-                                };
-                                context.Add(newInventory);
-                                context.SaveChanges();
-                            }
-                        }
+                        Inventory dbInventory = context.Inventories
+                            .Include(x => x.Product)
+                            .Where(x => appOrder.StoreID.Equals(x.StoreId))
+                            .Where(x =>  x.Product.ProductId == appOrder.Product[prod].ProductId )
+                            .First();
+
+                        dbInventory.ProductId = appOrder.Product[prod].ProductId;
+                        dbInventory.Quantity -= appOrder.Product[prod].Quantity;
+
+                        context.Update(dbInventory);
+                        context.SaveChanges();
                     }
+
+
+
+                    //List<Inventory> dbInventory = context.Inventories
+                    //    .Include(x => x.Product)
+                    //    .Where(x => appOrder.StoreID.Equals(x.StoreId))
+                    //    .ToList();
+
+
+                    //for (int prod = 0; prod < appOrder.Product.Count; prod++)
+                    //{
+                    //    for (int inv = 0; inv < dbInventory.Count; inv++)
+                    //    {
+                    //        if (appOrder.Product[prod].ProductId == dbInventory[inv].ProductId)
+                    //        {
+                    //            Inventory newInventory = new Inventory
+                    //            {
+                    //                StoreId = appOrder.StoreID,
+                    //                ProductId = appOrder.Product[prod].ProductId,
+                    //                Quantity = dbInventory[inv].Quantity - appOrder.Product[prod].Quantity
+                    //            };
+                    //            context.Update(newInventory);
+                    //            context.SaveChanges();
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
