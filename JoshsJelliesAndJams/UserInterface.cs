@@ -89,24 +89,32 @@ namespace JoshsJelliesAndJams.Library
                                     $"{productList[i+1].ProductId} - {productList[i+1].Name}\t {productList[i+1].CostPerItem}\t\t"+
                                     $"{productList[i+2].ProductId} - {productList[i+2].Name}\t {productList[i+2].CostPerItem}");
 
+            
+            string productID;
+            string quantity;
             do
             {
-                
+                int loopCounter = 0;
 
                 Console.WriteLine("Please select a product by number:");
-                //productId = Console.ReadLine();
+                productID = Console.ReadLine();
+                _order.Product[loopCounter].ProductId = int.Parse(productID);
 
                 Console.WriteLine("Please add a quantity:");
-                //quantity = Console.ReadLine();
-
-                //add list to order model
+                quantity = Console.ReadLine();
+                _order.Product[loopCounter].ProductId = int.Parse(productID);
 
                 Console.WriteLine("Would you like to add anything else to your order? Y/N");
                 if (Console.ReadLine().Equals("N"))
                     addOrder = false;
             } while (addOrder);
 
-            //Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
+            _order.CustomerNumber = _customer.CustomerID;
+            _order.StoreID = _customer.DefaultStore;
+
+            _orderRepository.AddOrder(_order);
+
+            Console.WriteLine($"Thank you for your order. Press enter to continue.");
             Console.ReadLine();
 
             Welcome();
@@ -146,7 +154,7 @@ namespace JoshsJelliesAndJams.Library
 
         }
 
-        private void NewCustomer()
+        private CustomerModel NewCustomer()
         {
             CustomerModel customer = new CustomerModel();
 
@@ -179,15 +187,19 @@ namespace JoshsJelliesAndJams.Library
             string zipcode = Console.ReadLine();
             customer.Zipcode = zipcode;
 
+            DefaultStore();
+
             _customer = customer;
             _customerRepository.AddCustomer(customer);
+
+            return _customer;
         }
 
 
 
         private void DefaultStore()
         {
-
+            
         }
 
         private void OrderHistory()

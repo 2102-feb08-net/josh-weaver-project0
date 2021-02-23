@@ -143,5 +143,30 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 }
             }
         }
+        public List<StoreModel> ListStores()
+        {
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
+            {
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
+                    List<Store> dbStore = context.Stores
+                        .ToList();
+
+                    List<StoreModel> appStoreList = new List<StoreModel>;
+
+                    foreach (var store in dbStore)
+                    {
+                        StoreModel lineItem = new StoreModel
+                        {
+                            StoreName = store.Name,
+                            StoreCity = store.City,
+                            StoreState = store.State
+                        };
+                    }
+                    return appStoreList;
+                }
+            }
+        }
     }
 }
