@@ -25,7 +25,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
 
         }
 
-        public string AddOrder(OrderModel appOrder)
+        public void AddOrder(OrderModel appOrder)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
             {

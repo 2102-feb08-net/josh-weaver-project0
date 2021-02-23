@@ -13,8 +13,8 @@ namespace JoshsJelliesAndJams.Library.IRepositories
 
         List<OrderModel> StoreHistory(string storeName);
 
-        List<InventoryModel> CheckInventory(int storeID);
+        List<ProductModel> CheckInventory(int storeID);
 
-        List<InventoryModel> CheckInventory(string storeName);
+        List<ProductModel> CheckInventory(string storeName);
     }
 }

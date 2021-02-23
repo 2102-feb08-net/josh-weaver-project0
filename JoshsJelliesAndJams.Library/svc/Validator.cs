@@ -12,7 +12,7 @@ namespace JoshsJelliesAndJams.Library.svc
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new Exception($"{nameof(value)} cannot be null.");
+                throw new ArgumentException($"{nameof(value)} cannot be null.");
             }
 
             return value.ToUpper();
@@ -22,11 +22,11 @@ namespace JoshsJelliesAndJams.Library.svc
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new Exception($"{nameof(value)} cannot be null.");
+                throw new ArgumentException($"{nameof(value)} cannot be null.");
             }
             else if (value.Length != 2)
             {
-                throw new Exception("Please use your state abbrivation.");
+                throw new ArgumentException("Please use your state abbrivation.");
             }
 
             return value.ToUpper();
@@ -36,7 +36,7 @@ namespace JoshsJelliesAndJams.Library.svc
         {
             if (value.Length != 5)
             {
-                throw new Exception("Invalid Zipcode.");
+                throw new ArgumentException("Invalid Zipcode.");
             }
 
             return value;
@@ -46,7 +46,7 @@ namespace JoshsJelliesAndJams.Library.svc
         {
             if (value > 30)
             {
-                throw new Exception("Unreasonable amount of products ordered.");
+                throw new ArgumentException("Unreasonable amount of products ordered.");
             }
 
             return value;

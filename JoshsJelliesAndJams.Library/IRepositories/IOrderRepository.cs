@@ -11,7 +11,7 @@ namespace JoshsJelliesAndJams.Library.IRepositories
     {
         List<OrderModel> PullHistory(CustomerModel appCustomer);
 
-        string AddOrder(OrderModel appOrder);
+        void AddOrder(OrderModel appOrder);
 
         List<ProductModel> SeeDetails(int orderID);
     }

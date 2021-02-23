@@ -13,7 +13,7 @@ namespace JoshsJelliesAndJams.Library
         static CustomerModel _customer;
         static OrderModel _order;
         static ProductModel _product;
-
+        
         public UserInterface(ICustomerRepository customerRepository, IOrderRepository orderRepository, IStoreRepository storeRepository)
         {
             _customerRepository = customerRepository;
@@ -51,6 +51,66 @@ namespace JoshsJelliesAndJams.Library
                 Console.WriteLine();
                 Welcome();
             }
+        }
+
+        private void NewOrder()
+        {
+            Console.WriteLine("Are you a new customer or returning customer? Please select a number:");
+            Console.WriteLine($"1- New Customer\t2- Returning Customer");
+            string response = Console.ReadLine();
+
+            bool customerResponse = true;
+
+            do
+            {
+                if (int.Parse(response) == 1)
+                {
+                    NewCustomer();
+                    customerResponse = false;
+                }
+                else if (int.Parse(response) == 2)
+                {
+                    ReturningCustomer();
+                    customerResponse = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please select a proper input");
+                }
+            } while (customerResponse);
+
+            Console.WriteLine();
+            bool addOrder = true;
+
+            List<ProductModel> productList = _storeRepository.CheckInventory(_customer.DefaultStore);
+
+            for(int i = 0; i < productList.Count; i += 3)
+                Console.WriteLine($"{productList[i].ProductId} - {productList[i].Name}\t {productList[i].CostPerItem}\t\t"+
+                                    $"{productList[i+1].ProductId} - {productList[i+1].Name}\t {productList[i+1].CostPerItem}\t\t"+
+                                    $"{productList[i+2].ProductId} - {productList[i+2].Name}\t {productList[i+2].CostPerItem}");
+
+            do
+            {
+                
+
+                Console.WriteLine("Please select a product by number:");
+                //productId = Console.ReadLine();
+
+                Console.WriteLine("Please add a quantity:");
+                //quantity = Console.ReadLine();
+
+                //add list to order model
+
+                Console.WriteLine("Would you like to add anything else to your order? Y/N");
+                if (Console.ReadLine().Equals("N"))
+                    addOrder = false;
+            } while (addOrder);
+
+            //Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
+            Console.ReadLine();
+
+            Welcome();
+
         }
 
         private void ReturningCustomer()
@@ -123,60 +183,7 @@ namespace JoshsJelliesAndJams.Library
             _customerRepository.AddCustomer(customer);
         }
 
-        private void NewOrder()
-        {
-            Console.WriteLine("Are you a new customer or returning customer? Please select a number:");
-            Console.WriteLine($"1- New Customer\t2- Returning Customer");
-            string response = Console.ReadLine();
 
-            bool customerResponse = true;
-
-            do
-            {
-                if (int.Parse(response) == 1)
-                {
-                    NewCustomer();
-                    customerResponse = false;
-                }
-                else if (int.Parse(response) == 2)
-                {
-                    ReturningCustomer();
-                    customerResponse = false;
-                }
-                else
-                {
-                    Console.WriteLine("Please select a proper input");
-                }
-            } while (customerResponse);
-
-            Console.WriteLine();
-            bool addOrder = true;
-
-            
-
-            do
-            {
-                //add a list of inventory (probably with a loop), data validation, etc)
-
-                Console.WriteLine("Please select a product:");
-                //productId = Console.ReadLine();
-
-                Console.WriteLine("Please add a quantity:");
-                //quantity = Console.ReadLine();
-
-                //add list to order model
-
-                Console.WriteLine("Would you like to add anything else to your order? Y/N");
-                if (Console.ReadLine().Equals("N"))
-                    addOrder = false;
-            } while (addOrder);
-
-            //Console.WriteLine($"Thank you for your order. Your order number is {Order.number}. Press enter to continue.");
-            Console.ReadLine();
-
-            Welcome();
-
-        }
 
         private void DefaultStore()
         {
