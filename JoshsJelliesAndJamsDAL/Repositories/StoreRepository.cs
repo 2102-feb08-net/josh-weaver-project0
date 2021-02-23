@@ -38,8 +38,11 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .ToList();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     List<ProductModel> appInventory = Inventory(dbInventory);
 =======
+=======
+>>>>>>> parent of 51e3bcf (minor changes to store repository)
                     List<InventoryModel> appInventory = new List<InventoryModel>();
 
 
@@ -73,8 +76,11 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                        .ToList();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     List<ProductModel> appInventory = Inventory(dbInventory)
 =======
+=======
+>>>>>>> parent of 51e3bcf (minor changes to store repository)
                     List<InventoryModel> appInventory = new List<InventoryModel>();
 
 

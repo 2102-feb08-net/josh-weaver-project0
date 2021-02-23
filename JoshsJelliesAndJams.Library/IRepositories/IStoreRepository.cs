@@ -16,6 +16,13 @@ namespace JoshsJelliesAndJams.Library.IRepositories
         List<InventoryModel> CheckInventory(int storeID);
 
         List<InventoryModel> CheckInventory(string storeName);
+<<<<<<< HEAD
+=======
+
+        void AddInventory(List<ProductModel> productList);
+
+        void RemoveInventory(List<ProductModel> productList);
+>>>>>>> parent of 51e3bcf (minor changes to store repository)
 
     }
 }
