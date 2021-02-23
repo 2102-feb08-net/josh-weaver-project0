@@ -38,7 +38,20 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                     IQueryable<Customer> dbCustomer = context.Customers
                         .OrderBy(x => x.CustomerId);
 
-                    Customer newCustomer = CustomerSvcs.AddNewCustomer(appCustomer);
+                    DateTime dateTime = DateTime.Now;
+
+                    var newCustomer = new Customer
+                    {
+                        FirstName = appCustomer.FirstName,
+                        LastName = appCustomer.LastName,
+                        StreetAddress1 = appCustomer.StreetAddress1,
+                        StreetAddress2 = appCustomer.StreetAddress2,
+                        City = appCustomer.City,
+                        State = appCustomer.State,
+                        Zipcode = appCustomer.Zipcode,
+                        CustomerCreated = dateTime,
+                        DefaultStore = null
+                    };
 
                     context.Add(newCustomer);
                     context.SaveChanges();
@@ -57,7 +70,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(c => (c.FirstName == appCustomer.FirstName) && (c.LastName == appCustomer.LastName))
                         .First();
 
-                    dbCustomer = CustomerSvcs.UpdateStore(appCustomer, dbCustomer);
+                    dbCustomer.DefaultStoreId = int.Parse(appCustomer.DefaultStore);
 
                     context.SaveChanges();
                 }
@@ -77,7 +90,17 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(c => (c.FirstName == @fname) && (c.LastName == lname))
                         .First();
 
-                    CustomerModel appCustomer = CustomerSvcs.CustomerLookup(dbCustomer);
+                    CustomerModel appCustomer = new CustomerModel
+                    {
+                        FirstName = dbCustomer.FirstName,
+                        LastName = dbCustomer.LastName,
+                        StreetAddress1 = dbCustomer.StreetAddress1,
+                        StreetAddress2 = dbCustomer.StreetAddress2,
+                        City = dbCustomer.City,
+                        State = dbCustomer.State,
+                        Zipcode = dbCustomer.Zipcode,
+                        DefaultStore = dbCustomer.DefaultStore.Name
+                    };
 
                     return appCustomer;
 

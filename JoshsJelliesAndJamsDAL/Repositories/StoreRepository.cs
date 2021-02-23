@@ -24,7 +24,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                 .Options;
 
         }
-
         public List<InventoryModel> CheckInventory(int storeID)
         {
             using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
@@ -37,15 +36,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.StoreId.Equals(storeID))
                         .ToList();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    List<ProductModel> appInventory = Inventory(dbInventory);
-=======
-=======
->>>>>>> parent of 51e3bcf (minor changes to store repository)
-=======
->>>>>>> parent of 51e3bcf (minor changes to store repository)
                     List<InventoryModel> appInventory = new List<InventoryModel>();
 
 
@@ -58,8 +48,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         };
                         appInventory.Add(listItem);
                     }
->>>>>>> parent of 51e3bcf (minor changes to store repository)
-
                     return appInventory;
 
                 }
@@ -78,15 +66,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                        .Where(x => x.StoreId.Equals(storeName))
                        .ToList();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    List<ProductModel> appInventory = Inventory(dbInventory)
-=======
-=======
->>>>>>> parent of 51e3bcf (minor changes to store repository)
-=======
->>>>>>> parent of 51e3bcf (minor changes to store repository)
                     List<InventoryModel> appInventory = new List<InventoryModel>();
 
 
@@ -99,7 +78,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         };
                         appInventory.Add(listItem);
                     }
->>>>>>> parent of 51e3bcf (minor changes to store repository)
 
                     return appInventory;
                 }
@@ -117,7 +95,18 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.StoreId.Equals(storeId))
                         .ToList();
 
-                    List<OrderModel> appOrder = History(dbOrder);
+                    List<OrderModel> appOrder = new List<OrderModel>();
+
+                    foreach (var item in dbOrder)
+                    {
+                        OrderModel lineItem = new OrderModel
+                        {
+                            OrderNumber = item.OrderId,
+                            OrderPlaced = (DateTime)item.DatePlaced,
+                            Total = item.OrderTotal
+                        };
+                        appOrder.Add(lineItem);
+                    }
 
                     return appOrder;
                 }
@@ -135,7 +124,18 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(x => x.StoreId.Equals(storeName))
                         .ToList();
 
-                    List<OrderModel> appOrder = History(dbOrder);
+                    List<OrderModel> appOrder = new List<OrderModel>();
+
+                    foreach (var item in dbOrder)
+                    {
+                        OrderModel lineItem = new OrderModel
+                        {
+                            OrderNumber = item.OrderId,
+                            OrderPlaced = (DateTime)item.DatePlaced,
+                            Total = item.OrderTotal
+                        };
+                        appOrder.Add(lineItem);
+                    }
 
                     return appOrder;
                 }

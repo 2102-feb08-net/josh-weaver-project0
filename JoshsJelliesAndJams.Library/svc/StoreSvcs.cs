@@ -27,18 +27,7 @@ namespace JoshsJelliesAndJams.Library.svc
 
         public List<OrderDetail> History(List<OrderDetail> dbOrder)
         {
-            List<OrderModel> appOrder = new List<OrderModel>();
-
-            foreach (var item in dbOrder)
-            {
-                OrderModel lineItem = new OrderModel
-                {
-                    OrderNumber = item.OrderId,
-                    OrderPlaced = (DateTime)item.DatePlaced,
-                    Total = item.OrderTotal
-                };
-                appOrder.Add(lineItem);
-            }
+           
         }
     }
 }
