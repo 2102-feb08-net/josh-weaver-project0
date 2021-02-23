@@ -41,17 +41,15 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         CustomerId = appOrder.CustomerNumber,
                         StoreId = appOrder.StoreID,
                         NumberOfProducts = appOrder.Product.Sum(x => x.Quantity),
-                        OrderTotal = appOrder.Product.Sum(x => x.TotalLine),
+                        OrderTotal = appOrder.Total,
                         DatePlaced = dateTime
                     };
 
                     context.Add(newOrder);
                     context.SaveChanges();
 
-
-                    OrderDetail dbOrderDetails = context.OrderDetails
-                        .Include(x => x.Order)
-                        .OrderBy(x => x.Order.OrderId).Last();
+                    Order dbOrderV2 = context.Orders.OrderBy(x => x.OrderId).Last();
+                    OrderDetail dbOrderDetails = context.OrderDetails.OrderBy(x => x.Id).Last();
 
                     List<OrderDetail> orderDetailList = new List<OrderDetail>();
 
@@ -59,16 +57,19 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                     {
                         OrderDetail newDetail = new OrderDetail
                         {
-                            OrderId = dbOrderDetails.Order.OrderId,
+                            OrderId = dbOrderV2.OrderId,
                             ProductId = product.ProductId,
                             Quantity = product.Quantity,
-                            TotalCost = product.Quantity * product.CostPerItem
+                            TotalCost = product.CostPerItem * product.Quantity
                         };
                         orderDetailList.Add(newDetail);
                     }
 
-                    context.Add(orderDetailList);
-                    context.SaveChanges();
+                    foreach (var lineItem in orderDetailList)
+                    {
+                        context.Add(lineItem);
+                        context.SaveChanges();
+                    }
 
 
 
@@ -76,8 +77,6 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Include(x => x.Product)
                         .Where(x => appOrder.StoreID.Equals(x.StoreId))
                         .ToList();
-
-                    List<Inventory> inventoryAdjustments = new List<Inventory>();
 
 
                     for (int prod = 0; prod < appOrder.Product.Count; prod++)
@@ -90,15 +89,13 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                                 {
                                     StoreId = appOrder.StoreID,
                                     ProductId = appOrder.Product[prod].ProductId,
-                                    Quantity = appOrder.Product[prod].Quantity - dbInventory[inv].Quantity
+                                    Quantity = dbInventory[inv].Quantity - appOrder.Product[prod].Quantity
                                 };
-                                inventoryAdjustments.Add(newInventory);
+                                context.Add(newInventory);
+                                context.SaveChanges();
                             }
                         }
                     }
-
-                    context.Add(inventoryAdjustments);
-                    context.SaveChanges();
                 }
             }
         }

@@ -50,7 +50,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         State = appCustomer.State,
                         Zipcode = appCustomer.Zipcode,
                         CustomerCreated = dateTime,
-                        DefaultStore = null
+                        DefaultStoreId = appCustomer.DefaultStore
                     };
 
                     context.Add(newCustomer);
@@ -70,7 +70,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         .Where(c => (c.FirstName == appCustomer.FirstName) && (c.LastName == appCustomer.LastName))
                         .First();
 
-                    dbCustomer.DefaultStoreId = int.Parse(appCustomer.DefaultStore);
+                    dbCustomer.DefaultStoreId = appCustomer.DefaultStore;
 
                     context.SaveChanges();
                 }
@@ -92,6 +92,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
 
                     CustomerModel appCustomer = new CustomerModel
                     {
+                        CustomerID = dbCustomer.CustomerId,
                         FirstName = dbCustomer.FirstName,
                         LastName = dbCustomer.LastName,
                         StreetAddress1 = dbCustomer.StreetAddress1,
@@ -99,14 +100,43 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         City = dbCustomer.City,
                         State = dbCustomer.State,
                         Zipcode = dbCustomer.Zipcode,
-                        DefaultStore = dbCustomer.DefaultStore.Name
+                        DefaultStore = (int)dbCustomer.DefaultStoreId
                     };
 
                     return appCustomer;
 
                 }
             }
+        }
+        public CustomerModel LookupCustomer(CustomerModel appCustomer)
+        {
+            using (var logStream = new StreamWriter("jjjdb-log.txt", append: true) { AutoFlush = true })
+            {
+                DBConnection(logStream);
+                using (var context = new JoshsJelliesAndJamsContext(optionsBuilder))
+                {
 
+                    Customer dbCustomer = context.Customers
+                        .Include(c => c.DefaultStore)
+                        .Where(c => (c.FirstName == appCustomer.FirstName) && (c.LastName == appCustomer.LastName))
+                        .First();
+
+                    CustomerModel appCustomerWithId = new CustomerModel
+                    {
+                        CustomerID = dbCustomer.CustomerId,
+                        FirstName = dbCustomer.FirstName,
+                        LastName = dbCustomer.LastName,
+                        StreetAddress1 = dbCustomer.StreetAddress1,
+                        StreetAddress2 = dbCustomer.StreetAddress2,
+                        City = dbCustomer.City,
+                        State = dbCustomer.State,
+                        Zipcode = dbCustomer.Zipcode,
+                        DefaultStore = (int)dbCustomer.DefaultStoreId
+                    };
+
+                    return appCustomerWithId;
+                }
+            }
         }
     }
 }

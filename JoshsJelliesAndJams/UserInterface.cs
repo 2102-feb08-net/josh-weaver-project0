@@ -1,4 +1,5 @@
 ﻿using JoshsJelliesAndJams.Library.IRepositories;
+using JoshsJelliesAndJams.Library.Models;
 using System;
 using System.Collections.Generic;
 
@@ -24,6 +25,7 @@ namespace JoshsJelliesAndJams.Library
         public void Run()
         {
             Welcome();
+
         }
 
         private void Welcome()
@@ -65,12 +67,12 @@ namespace JoshsJelliesAndJams.Library
             {
                 if (int.Parse(response) == 1)
                 {
-                    NewCustomer();
+                    _customer = NewCustomer();
                     customerResponse = false;
                 }
                 else if (int.Parse(response) == 2)
                 {
-                    ReturningCustomer();
+                    _customer = ReturningCustomer();
                     customerResponse = false;
                 }
                 else
@@ -79,38 +81,54 @@ namespace JoshsJelliesAndJams.Library
                 }
             } while (customerResponse);
 
+            _customer = _customerRepository.LookupCustomer(_customer);
+
             Console.WriteLine();
             bool addOrder = true;
 
             List<ProductModel> productList = _storeRepository.CheckInventory(_customer.DefaultStore);
 
             for(int i = 0; i < productList.Count; i += 3)
-                Console.WriteLine($"{productList[i].ProductId} - {productList[i].Name}\t {productList[i].CostPerItem}\t\t"+
-                                    $"{productList[i+1].ProductId} - {productList[i+1].Name}\t {productList[i+1].CostPerItem}\t\t"+
-                                    $"{productList[i+2].ProductId} - {productList[i+2].Name}\t {productList[i+2].CostPerItem}");
+                Console.WriteLine($"{productList[i].ProductId} - {productList[i].Name}\t {productList[i].CostPerItem:C2}\t\t"+
+                                    $"{productList[i+1].ProductId} - {productList[i+1].Name}\t {productList[i+1].CostPerItem:C2}\t\t"+
+                                    $"{productList[i+2].ProductId} - {productList[i+2].Name}\t {productList[i+2].CostPerItem:C2}");
 
+            
+            List<ProductModel> orderList = new List<ProductModel>();
             
             string productID;
             string quantity;
+            int loopCounter = 0;
             do
             {
-                int loopCounter = 0;
+                ProductModel lineItem = new ProductModel();
 
                 Console.WriteLine("Please select a product by number:");
                 productID = Console.ReadLine();
-                _order.Product[loopCounter].ProductId = int.Parse(productID);
+                lineItem.ProductId = int.Parse(productID);
+                lineItem.CostPerItem = productList[int.Parse(productID)-1].CostPerItem;
 
                 Console.WriteLine("Please add a quantity:");
                 quantity = Console.ReadLine();
-                _order.Product[loopCounter].ProductId = int.Parse(productID);
+                lineItem.Quantity = int.Parse(quantity);
+
+                orderList.Add(lineItem);
 
                 Console.WriteLine("Would you like to add anything else to your order? Y/N");
                 if (Console.ReadLine().Equals("N"))
                     addOrder = false;
+                loopCounter++;
             } while (addOrder);
 
+            _order = new OrderModel();
+            _order.Product = orderList;
             _order.CustomerNumber = _customer.CustomerID;
             _order.StoreID = _customer.DefaultStore;
+
+            decimal total = 0;
+            foreach (var line in _order.Product)
+                total += (line.Quantity * line.CostPerItem);
+            _order.Total = total;
 
             _orderRepository.AddOrder(_order);
 
@@ -121,13 +139,14 @@ namespace JoshsJelliesAndJams.Library
 
         }
 
-        private void ReturningCustomer()
+        private CustomerModel ReturningCustomer()
         {
             Console.WriteLine("What is your first name?");
-            string firstName = Console.ReadLine().ToUpper();
+            string firstName = Console.ReadLine();
             Console.WriteLine("What is your last name?");
-            string lastName = Console.ReadLine().ToUpper();
+            string lastName = Console.ReadLine();
 
+            _customer = new CustomerModel();
             _customer = _customerRepository.LookupCustomer(firstName, lastName);
 
             Console.WriteLine($"{_customer.FirstName} {_customer.LastName}\n{_customer.StreetAddress1}\n{_customer.StreetAddress2}\n{_customer.City}, {_customer.State}, {_customer.Zipcode}");
@@ -147,6 +166,7 @@ namespace JoshsJelliesAndJams.Library
                     ReturningCustomer();
                 }
             }
+            return _customer;
         }
 
         private void Selection()
@@ -187,7 +207,7 @@ namespace JoshsJelliesAndJams.Library
             string zipcode = Console.ReadLine();
             customer.Zipcode = zipcode;
 
-            DefaultStore();
+            customer.DefaultStore = DefaultStore();
 
             _customer = customer;
             _customerRepository.AddCustomer(customer);
@@ -197,9 +217,19 @@ namespace JoshsJelliesAndJams.Library
 
 
 
-        private void DefaultStore()
+        private int DefaultStore()
         {
-            
+            List<StoreModel> storeList = _storeRepository.ListStores();
+
+            foreach (var store in storeList)
+            {
+                Console.WriteLine($"{store.StoreID} - {store.StoreName} - {store.StoreCity}, {store.StoreState}");
+            }
+            Console.WriteLine("Please select a store to order from:");
+            string userInput = Console.ReadLine();
+
+            return int.Parse(userInput);
+
         }
 
         private void OrderHistory()

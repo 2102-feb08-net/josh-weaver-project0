@@ -9,7 +9,7 @@ namespace JoshsJelliesAndJams.Library
         private int _quantity;
         public int ProductId { get; set; }
         public string Name { get; set; }
-        public int Quantity { get => _quantity; set => _quantity = Quantity; }
+        public int Quantity { get; set; }
         public decimal CostPerItem { get; set; }
         public decimal TotalLine { get; set; }
     }

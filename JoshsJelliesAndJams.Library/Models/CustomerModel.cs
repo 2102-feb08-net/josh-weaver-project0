@@ -56,10 +56,7 @@ namespace JoshsJelliesAndJams.Library
             set => _zipcode = value.ZipcodeValidator(); 
         }
 
-        public int DefaultStore
-        {
-            get => _defaultStore;
-            set => DefaultStore = _defaultStore;
-        }
+        public int DefaultStore { get; set; }
+
     }
 }

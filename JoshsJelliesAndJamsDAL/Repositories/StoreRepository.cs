@@ -153,16 +153,18 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                     List<Store> dbStore = context.Stores
                         .ToList();
 
-                    List<StoreModel> appStoreList = new List<StoreModel>;
+                    List<StoreModel> appStoreList = new List<StoreModel>();
 
                     foreach (var store in dbStore)
                     {
                         StoreModel lineItem = new StoreModel
                         {
+                            StoreID = store.StoreId,
                             StoreName = store.Name,
                             StoreCity = store.City,
                             StoreState = store.State
                         };
+                        appStoreList.Add(lineItem);
                     }
                     return appStoreList;
                 }
