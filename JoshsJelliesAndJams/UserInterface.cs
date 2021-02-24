@@ -246,7 +246,7 @@ namespace JoshsJelliesAndJams.Library
 
             foreach(var line in orderDetail)
             {
-                Console.WriteLine($"{line.Name} - {Decimal.ToInt64(line.Quantity)} - {line.CostPerItem:C2} - {line.TotalLine}");
+                Console.WriteLine($"{line.Name} - {Decimal.ToInt64(line.Quantity)} - {line.CostPerItem:C2} - {line.TotalLine:C2}");
                 Console.WriteLine();
             }
             Console.ReadLine();
@@ -257,17 +257,20 @@ namespace JoshsJelliesAndJams.Library
         {
             Console.WriteLine("Welcome Management! What would you like to see?");
             Console.WriteLine("1 - Store Order History\t2 - Store Inventory");
+            int response = int.Parse(Console.ReadLine());
 
-            if (int.Parse(Console.ReadLine()) == 1)
+            if (response == 1)
             {
                 StoreHistory();
             }
-            else if (int.Parse(Console.ReadLine()) == 2)
+            else if (response == 2)
             {
                 StoreInventory();
             }
             else
+            {
                 Console.WriteLine("Please enter a valid input:");
+            }
         }
         private void StoreHistory()
         {
@@ -284,7 +287,7 @@ namespace JoshsJelliesAndJams.Library
 
             foreach (var line in orderHistory)
             {
-                Console.WriteLine($"Order Number: {line.OrderNumber}: #:{line.NumberOfProducts:G} - $:{line.Total:C2} - {line.OrderPlaced}");
+                Console.WriteLine($"Order Number: {line.OrderNumber}: #:{Decimal.ToInt64(line.NumberOfProducts)} - $:{line.Total:C2} - {line.OrderPlaced}");
                 Console.WriteLine();
             }
             Console.WriteLine("Which order would you like to see? (Input numeric value)");
@@ -294,10 +297,11 @@ namespace JoshsJelliesAndJams.Library
 
             foreach (var line in orderDetail)
             {
-                Console.WriteLine($"{line.Name} - {line.Quantity:G} - {line.CostPerItem:C2} - {line.TotalLine}");
+                Console.WriteLine($"{line.Name} - {Decimal.ToInt64(line.Quantity)} - {line.CostPerItem:C2} - {line.TotalLine:C2}");
                 Console.WriteLine();
             }
             Console.ReadLine();
+            Welcome();
         }
 
         private void StoreInventory()
@@ -315,11 +319,10 @@ namespace JoshsJelliesAndJams.Library
             
             foreach (var line in displayInventory)
             {
-                Console.WriteLine($"{line.Name} - {line.Quantity:G}");
-                Console.WriteLine();
+                Console.WriteLine($"{line.Name} - {Decimal.ToInt64(line.Quantity)}");
             }
             Console.ReadLine();
-
+            Welcome();
 
         }
     }
