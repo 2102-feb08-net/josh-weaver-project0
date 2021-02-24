@@ -44,6 +44,7 @@ namespace JoshsJelliesAndJams.DAL.Repositories
                         ProductModel listItem = new ProductModel
                         {
                             ProductId = item.Product.ProductId,
+                            Quantity = item.Quantity,
                             Name = item.Product.Name,
                             CostPerItem = item.Product.Price
                         };

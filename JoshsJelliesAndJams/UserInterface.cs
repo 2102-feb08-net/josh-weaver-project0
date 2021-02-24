@@ -35,17 +35,17 @@ namespace JoshsJelliesAndJams.Library
             Console.WriteLine("1 - Create a new order\t 2 - Review Order History");
             string response = Console.ReadLine();
 
-            if (int.Parse(response) == 1)
+            if (response.Equals("Management"))
             {
-                NewOrder();
+                ManagementMenu();
             }
             else if (int.Parse(response) == 2)
             {
                 OrderHistory();
             }
-            else if (response.Equals("Management"))
+            else if (int.Parse(response) == 1)
             {
-                //ManagementMenu();
+                NewOrder();
             }
             else
             {
@@ -81,7 +81,7 @@ namespace JoshsJelliesAndJams.Library
                 }
             } while (customerResponse);
 
-            _customer = _customerRepository.LookupCustomer(_customer);
+          
 
             Console.WriteLine();
             bool addOrder = true;
@@ -118,10 +118,12 @@ namespace JoshsJelliesAndJams.Library
                 loopCounter++;
             } while (addOrder);
 
-            _order = new OrderModel();
-            _order.Product = orderList;
-            _order.CustomerNumber = _customer.CustomerID;
-            _order.StoreID = _customer.DefaultStore;
+            _order = new OrderModel
+            {
+                Product = orderList,
+                CustomerNumber = _customer.CustomerID,
+                StoreID = _customer.DefaultStore
+            };
 
             decimal total = 0;
             foreach (var line in _order.Product)
@@ -167,11 +169,6 @@ namespace JoshsJelliesAndJams.Library
             return _customer;
         }
 
-        private void Selection()
-        {
-
-        }
-
         private CustomerModel NewCustomer()
         {
             CustomerModel customer = new CustomerModel();
@@ -208,7 +205,7 @@ namespace JoshsJelliesAndJams.Library
             customer.DefaultStore = DefaultStore();
 
             _customer = customer;
-            _customerRepository.AddCustomer(customer);
+            _customer = _customerRepository.AddCustomer(customer);
 
             return _customer;
         }
@@ -232,43 +229,98 @@ namespace JoshsJelliesAndJams.Library
 
         private void OrderHistory()
         {
-            Console.WriteLine("What type of order history would you like to see?");
-            Console.WriteLine("1 - Customer History\t2 - Store History\t3 - Store Inventory");
-            string input = Console.ReadLine();
+            _customer = ReturningCustomer();
+            Console.WriteLine("Order History:");
 
-            if (int.Parse(input) == 1)
+            List<OrderModel> orderHistory = _orderRepository.PullHistory(_customer);
+            
+            foreach(var line in orderHistory)
             {
-                CustomerHistory();
+                Console.WriteLine($"Order Number: {line.OrderNumber}: #:{Decimal.ToInt64(line.NumberOfProducts)} - $:{line.Total:C2} - {line.OrderPlaced}");
+                Console.WriteLine();
             }
-            else if (int.Parse(input) == 2)
+            Console.WriteLine("Which order would you like to see? (Input numeric value)");
+            int response = int.Parse(Console.ReadLine());
+
+            List<ProductModel> orderDetail = _orderRepository.SeeDetails(response);
+
+            foreach(var line in orderDetail)
+            {
+                Console.WriteLine($"{line.Name} - {Decimal.ToInt64(line.Quantity)} - {line.CostPerItem:C2} - {line.TotalLine}");
+                Console.WriteLine();
+            }
+            Console.ReadLine();
+            Welcome();
+        }
+
+        private void ManagementMenu()
+        {
+            Console.WriteLine("Welcome Management! What would you like to see?");
+            Console.WriteLine("1 - Store Order History\t2 - Store Inventory");
+
+            if (int.Parse(Console.ReadLine()) == 1)
             {
                 StoreHistory();
             }
-            else if (int.Parse(input) == 3)
+            else if (int.Parse(Console.ReadLine()) == 2)
             {
                 StoreInventory();
             }
             else
-            {
-                Console.WriteLine("Please input a valid selection.");
-                OrderHistory();
-            }
+                Console.WriteLine("Please enter a valid input:");
         }
-
-        private void CustomerHistory()
-        {
-            //logic here for receiving the customer name to pull order history for the customer
-        }
-
         private void StoreHistory()
         {
-            //logic here to select a store name and pull all order history for that store
+            List<StoreModel> storeList = _storeRepository.ListStores();
+
+            foreach (var store in storeList)
+            {
+                Console.WriteLine($"{store.StoreID} - {store.StoreName} - {store.StoreCity}, {store.StoreState}");
+            }
+            Console.WriteLine("Please select a store to view order history from:");
+            string userInput = Console.ReadLine();
+
+            List<OrderModel> orderHistory = _storeRepository.StoreHistory(int.Parse(userInput));
+
+            foreach (var line in orderHistory)
+            {
+                Console.WriteLine($"Order Number: {line.OrderNumber}: #:{line.NumberOfProducts:G} - $:{line.Total:C2} - {line.OrderPlaced}");
+                Console.WriteLine();
+            }
+            Console.WriteLine("Which order would you like to see? (Input numeric value)");
+            int response = int.Parse(Console.ReadLine());
+
+            List<ProductModel> orderDetail = _orderRepository.SeeDetails(response);
+
+            foreach (var line in orderDetail)
+            {
+                Console.WriteLine($"{line.Name} - {line.Quantity:G} - {line.CostPerItem:C2} - {line.TotalLine}");
+                Console.WriteLine();
+            }
+            Console.ReadLine();
         }
 
         private void StoreInventory()
         {
-            //logic here to select a store and display the store inventory 
-            //create a store inventory method
+            List<StoreModel> storeList = _storeRepository.ListStores();
+
+            foreach (var store in storeList)
+            {
+                Console.WriteLine($"{store.StoreID} - {store.StoreName} - {store.StoreCity}, {store.StoreState}");
+            }
+            Console.WriteLine("Please select a store to view current inventory:");
+            int userInput = int.Parse(Console.ReadLine());
+
+            List<ProductModel> displayInventory = _storeRepository.CheckInventory(userInput);
+            
+            foreach (var line in displayInventory)
+            {
+                Console.WriteLine($"{line.Name} - {line.Quantity:G}");
+                Console.WriteLine();
+            }
+            Console.ReadLine();
+
+
         }
     }
 }

@@ -9,9 +9,9 @@ namespace JoshsJelliesAndJams.Library.IRepositories
     public interface ICustomerRepository
     {
         CustomerModel LookupCustomer(string firstName, string lastName);
-        CustomerModel LookupCustomer(CustomerModel appCustomer);
 
-        void AddCustomer(CustomerModel model);
+
+        CustomerModel AddCustomer(CustomerModel model);
 
         void UpdateDefaultStore(CustomerModel appCustomer, string appStore);
 
